@@ -9,6 +9,8 @@ type ProductTabsProps = {
   product: HttpTypes.StoreProduct
 }
 
+const hasValue = (value: number | null | undefined) => value !== null && value !== undefined
+
 const ProductTabs = ({ product }: ProductTabsProps) => {
   const tabs = [
     {
@@ -65,11 +67,15 @@ const ProductSpecsTab = ({ product }: ProductTabsProps) => {
 }
 
 const ProductSpecificationsTab = ({ product }: ProductTabsProps) => {
+  const hasWeight = hasValue(product.weight)
+  const hasDimensions =
+    hasValue(product.height) || hasValue(product.width) || hasValue(product.length)
+
   return (
     <div className="text-small-regular py-8">
       <Table className="rounded-lg shadow-borders-base overflow-hidden border-none">
         <Table.Body>
-          {product.weight && (
+          {hasWeight && (
             <Table.Row>
               <Table.Cell className="border-r">
                 <span className="font-semibold">Weight</span>
@@ -77,7 +83,7 @@ const ProductSpecificationsTab = ({ product }: ProductTabsProps) => {
               <Table.Cell className="px-4">{product.weight} grams</Table.Cell>
             </Table.Row>
           )}
-          {(product.height || product.width || product.length) && (
+          {hasDimensions && (
             <Table.Row>
               <Table.Cell className="border-r">
                 <span className="font-semibold">Dimensions (HxWxL)</span>
